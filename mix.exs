@@ -1,4 +1,4 @@
-defmodule Extractly.MixProject do
+defmodule TagCloud.MixProject do
   use Mix.Project
 
   @version "0.1.0"
