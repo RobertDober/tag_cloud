@@ -25,3 +25,4 @@ extractly-*.tar
 
 /config/*.secret.exs
 .elixir_ls/
+tmp/

@@ -1,11 +1,13 @@
 defmodule TagCloud.Compiler do
   use TagCloud.Types
 
+  alias TagCloud.Compiler.Color
+
   @moduledoc """
   Compiles tag cloud specifications of the form
   `font_size font_weight color` to corresponding HTML attributes
 
-  `color`  either a legal CSS color or an integer between 0(white) and 12(black) that
+  `color`  either a legal CSS color or an integer between 0(transparent) and 12(opaque) that can be followed by a /css_color
   `font_size` is an integer in `pt`
   `font_weight` an integer between 0 and 800
   matches to 13 gamma corrected shades of grey (yes only 13, a bigger number, let's pick
@@ -40,12 +42,13 @@ defmodule TagCloud.Compiler do
   end
 
   @gray_scale_rgx ~r{\A \d\d? \z}x
+
   @spec _make_color(binary()) :: binary()
   defp _make_color(color) do
-    cond do
-      Regex.match?(@gray_scale_rgx, color) -> "##{_make_gamma_corrected_gray_scale(color)}"
-      String.starts_with?(color, "#")      -> color
-      true                                 -> raise TagCloud.Error, "illegal color desc #{color}, use gray scale in 0..12 or #rgb"
+    {scale, base_color} = Color.parse_color(color)
+    case Color.parse_color(color) do
+      {nil, color_} -> color_
+      color__ -> _make_gamma_corrected_color(color__)
     end
   end
 
@@ -58,23 +61,27 @@ defmodule TagCloud.Compiler do
     end
   end
 
-  @spec _make_gamma_corrected_gray_scale(binary()|integer()) :: binary()
-  defp _make_gamma_corrected_gray_scale(gray)
-  defp _make_gamma_corrected_gray_scale(gray) when is_binary(gray) do
-    with {gray_, _} = Integer.parse(gray), do: _make_gamma_corrected_gray_scale(gray_)
-  end
+  defp _make_gamma_corrected_color(color)
 
   # Can become params later, if tweaking is needed
   @gamma 1 / 2.2
   @scales 12
-  defp _make_gamma_corrected_gray_scale(gray) do
-    with rgbf = 255 * :math.pow((@scales - gray)/@scales, @gamma) do
-      rgbf
+  @parse_color_rgx ~r{\A (..) (..) (..) \z}x
+  defp _make_gamma_corrected_color({scale, base_color}) do
+    Regex.run(@parse_color_rgx, base_color)
+    |> tl()
+    |> Enum.map(&_make_gamma_corrected_octet(scale, &1))
+    |> Enum.join
+    |> String.downcase
+  end
+
+  defp _make_gamma_corrected_octet(scale, color) do
+    inv_c = 255 - _decimal_octet_value(color)
+    with scaled <- inv_c * :math.pow((@scales - scale)/@scales, @gamma) do
+      scaled
         |> round()
         |> Integer.to_string(16)
         |> String.pad_leading(2, "00")
-        |> String.duplicate(3)
-        |> String.downcase
     end
   end
 
@@ -82,4 +89,10 @@ defmodule TagCloud.Compiler do
   defp _make_font_weight(font_weight) do
     font_weight
   end
+
+  @spec _decimal_octet_value(binary()) :: integer()
+  defp _decimal_octet_value(color) do
+    with {c,""} <- Integer.parse(color), do: c
+  end
+
 end
