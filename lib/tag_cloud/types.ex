@@ -7,6 +7,8 @@ defmodule TagCloud.Types do
       @type attributes :: Earmark.ast_attributes
 
       @type binaries :: binaries()
+
+      @type maybe(t) :: t | nil
     end
   end
 end
