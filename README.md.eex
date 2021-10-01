@@ -1,9 +1,9 @@
 <%= xtra.do_not_edit_warning template: template %>
 
-## TagCloud
-
 All doctests in this README have been extracted from the code by [Extractly](https://github.com/RobertDober/extractly)
 and are therefore tested
+
+<%= xtra.moduledoc "TagCloud.Cli", include: :all, headline: 3, wrap_code_blocks: "elixir" %>
 
 <%= xtra.moduledoc "TagCloud", include: :all, headline: 3, wrap_code_blocks: "elixir" %>
 

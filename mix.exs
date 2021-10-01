@@ -5,7 +5,7 @@ defmodule TagCloud.MixProject do
   @url "https://github.com/robertdober/tag_cloud"
 
   @description """
-  Elxir Tools to create Tag clouds - Integration with Earmark Annotations - Independent Library Functions - Gamma correction for grey scales - CSS files
+  Eilxir Tools to create Tag clouds - Integration with Earmark Annotations - Independent Library Functions - Gamma correction for grey scales - CSS files
   """
 
 
@@ -15,7 +15,7 @@ defmodule TagCloud.MixProject do
       version: @version,
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
-      # escript: [main_module: Extractly.Cli],
+      escript: [main_module: TagCloud.Cli],
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: @description,
@@ -43,6 +43,7 @@ defmodule TagCloud.MixProject do
       {:excoveralls, "~> 0.14.2", only: :test},
       {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false},
       {:extractly, "~> 0.5.3", only: [:dev], runtime: false},
+      {:earmark, "~> 1.4.16-pre2"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
     ]

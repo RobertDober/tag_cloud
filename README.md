@@ -4,10 +4,23 @@ It has been generated from the template `README.md.eex` by Extractly (https://gi
 and any changes you make in this file will most likely be lost
 -->
 
-## TagCloud
-
 All doctests in this README have been extracted from the code by [Extractly](https://github.com/RobertDober/extractly)
 and are therefore tested
+
+### TagCloud.Cli
+
+usage:
+
+    tag_cloud --help
+    tag_cloud --version
+    tag_cloud [ options... <file> ]
+
+convert file from Markdown to HTML.using Earmark and allowing for TagCloud annotations
+
+    where options can be any of:
+
+    none so far
+
 
 ### TagCloud
 
@@ -18,7 +31,18 @@ and are therefore tested
 [![Hex.pm](https://img.shields.io/hexpm/dw/tag_cloud.svg)](https://hex.pm/packages/tag_cloud)
 [![Hex.pm](https://img.shields.io/hexpm/dt/tag_cloud.svg)](https://hex.pm/packages/tag_cloud)
 
-Elxir Tools to create Tag clouds - Integration with Earmark Annotations - Independent Library Functions - Gamma correction for grey scales
+Elixir Tools to create Tag clouds - Integration with Earmark Annotations - Independent Library Functions - Gamma correction for grey scales
+
+- Earmark Integration (needs v1.4.16-pre2 or greater)
+
+Although there are different ways the simplest way is to annotate your markdown document with tag_clouds and then render as follows
+
+```elixir
+  annotated_markdown
+  |> Earmark.as_ast!
+  |> TagCloud.make_tag_clouds
+  |> Earmark.transform
+```
 
 ### TagCloud.version/0
 
