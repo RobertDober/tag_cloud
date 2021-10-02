@@ -28,7 +28,7 @@ defmodule TagCloud.EarmarkAst do
 
   @spec annotate_node(ast_node(), binary()) :: ast_node()
   defp annotate_node({_, atts, content, meta}, tag_cloud_description) do
-    atts_ = TagCloud.make_atts_from_description(tag_cloud_description)
+    atts_ = TagCloud.dsl_to_attributes(tag_cloud_description)
     {"span", Earmark.AstTools.merge_atts(atts, atts_), content, meta}
   end
 end

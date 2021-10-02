@@ -33,7 +33,7 @@ defmodule TagCloud do
 
   defdelegate make_tag_clouds(ast, options \\ [annotation: "%tc:"]), to: TagCloud.EarmarkAst
 
-  defdelegate make_atts_from_description(description), to: TagCloud.Compiler
+  defdelegate dsl_to_attributes(description), to: TagCloud.Compiler
 
   @doc """
   A convenience method to access this library's version

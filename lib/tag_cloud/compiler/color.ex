@@ -15,6 +15,19 @@ defmodule TagCloud.Compiler.Color do
   @simple_scale_rgx ~r<\A \d\d? \z>x
   @hex_scale_rgx ~r<\A (\d\d?) / \# (#{@hex}{6}) \z>x
 
+  @scales 12
+  @gamma 2.2
+  def gamma_corrected(scale, octet) do
+    inv_c = String.to_integer(octet, 16)
+    with scaled <- (255 - inv_c) * :math.pow((@scales - scale)/@scales, 1/@gamma) do
+      (inv_c - round(scaled))
+      |> abs()
+        |> round()
+        |> Integer.to_string(16)
+        |> String.pad_leading(2, "00")
+        |> String.downcase
+    end
+  end
   @spec parse_color(binary) :: scaled_color_t()
   def parse_color(color) do
     try do
