@@ -7,7 +7,17 @@ defmodule TagCloud do
   [![Hex.pm](https://img.shields.io/hexpm/dw/tag_cloud.svg)](https://hex.pm/packages/tag_cloud)
   [![Hex.pm](https://img.shields.io/hexpm/dt/tag_cloud.svg)](https://hex.pm/packages/tag_cloud)
 
-  Elixir Tools to create Tag clouds - Integration with Earmark Annotations - Independent Library Functions - Gamma correction for grey scales
+  - Make Tag Clouds from a simple DSL
+
+      e.g.
+      ```
+      12 16 100 # translates to style="color: #000000; font-size: 16pt; font-weight: 100;"
+      #ffdd00 3em bb # style="color: #ffdd00; font-size: 3em; font-weight: 800;"
+
+      ```
+
+  
+  - Elixir Tools to create Tag clouds - Integration with Earmark Annotations - Independent Library Functions - Gamma correction for grey scales
 
   - Earmark Integration (needs v1.4.16-pre2 or greater)
 

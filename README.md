@@ -7,22 +7,7 @@ and any changes you make in this file will most likely be lost
 All doctests in this README have been extracted from the code by [Extractly](https://github.com/RobertDober/extractly)
 and are therefore tested
 
-### TagCloud.Cli
-
-usage:
-
-    tag_cloud --help
-    tag_cloud --version
-    tag_cloud [ options... <file> ]
-
-convert file from Markdown to HTML.using Earmark and allowing for TagCloud annotations
-
-    where options can be any of:
-
-    none so far
-
-
-### TagCloud
+## TagCloud
 
 
 [![CI](https://github.com/RobertDober/tag_cloud/actions/workflows/ci.yml/badge.svg)](https://github.com/RobertDober/tag_cloud/actions/workflows/ci.yml)
@@ -43,6 +28,25 @@ Although there are different ways the simplest way is to annotate your markdown 
   |> TagCloud.make_tag_clouds
   |> Earmark.transform
 ```
+
+
+### TagCloud.Cli
+
+usage:
+
+    tag_cloud --help
+    tag_cloud --version
+    tag_cloud [ options... <file> ]
+
+convert file from Markdown to HTML.using Earmark and allowing for TagCloud annotations
+
+cond do
+
+    file ends with .eex -> treat it as an EEx template
+
+    true                -> treat file as plain markdown
+
+
 
 ### TagCloud.version/0
 
