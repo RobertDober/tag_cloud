@@ -15,9 +15,17 @@ defmodule TagCloud.Compiler.Color do
   @simple_scale_rgx ~r<\A \d\d? \z>x
   @hex_scale_rgx ~r<\A (\d\d?) / \# (#{@hex}{6}) \z>x
 
+  @color_rgx ~r<\A (..) (..) (..) \z>x
   @scales 12
   @gamma 2.2
-  def gamma_corrected(scale, octet) do
+  def gamma_corrected(scale, color) do
+    Regex.run(@color_rgx, color)
+    |> tl()
+    |> IO.inspect
+    |> Enum.map(&gamma_corrected_octet(scale, &1))
+    |> Enum.join
+  end
+  def gamma_corrected_octet(scale, octet) do
     inv_c = String.to_integer(octet, 16)
     with scaled <- (255 - inv_c) * :math.pow((@scales - scale)/@scales, 1/@gamma) do
       (inv_c - round(scaled))
