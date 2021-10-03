@@ -1,7 +1,7 @@
 defmodule TagCloud.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.0-pre"
   @url "https://github.com/robertdober/tag_cloud"
 
   @description """
@@ -16,6 +16,7 @@ defmodule TagCloud.MixProject do
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       escript: [main_module: TagCloud.Cli],
+
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: @description,
