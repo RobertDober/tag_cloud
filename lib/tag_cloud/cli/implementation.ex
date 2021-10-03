@@ -65,7 +65,7 @@ defmodule TagCloud.Cli.Implementation do
     try do
       {:stdio, _transform_markdown(file)}
     rescue
-      e in RuntimeError -> {:stderr, to_string(e.message)}
+      e in File.Error -> {:stderr, Exception.message(e)}
     end
   end
 

@@ -23,6 +23,12 @@ defmodule TagCloud.Compiler do
 
       iex(2)> dsl_to_attributes("8/fuchsia 3em 800")
       [{"style", "color: #ff9bff; font-size: 3em; font-weight: 800;"}]
+
+  ### Just use your own color
+
+      iex(3)> dsl_to_attributes("#cafe00")
+      [{"style", "color: #cafe00;"}]
+
   """
   @spec dsl_to_attributes(binary()) :: attributes()
   def dsl_to_attributes(description) do

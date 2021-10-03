@@ -80,6 +80,34 @@ defmodule TagCloud do
         {"span", [{"style", "color: #ed6d00;"}], ["Phoenix "], %{annotation: "%tc: 8/sandybrown"}}
       ]
 
+    Of course not annotated blocks are not effected
+
+      iex(6)> markdown = [
+      ...(6)> "Elixir %tc: 12 20 800", "",
+      ...(6)> "Erlang", "",
+      ...(6)> "Phoenix %tc: 8/sandybrown" ]
+      ...(6)> render_ast(markdown)
+      [
+        {"span", [{"style", "color: #000000; font-size: 20pt; font-weight: 800;"}], ["Elixir "], %{annotation: "%tc: 12 20 800"}},
+        {"p", [], ["Erlang"], %{}},
+        {"span", [{"style", "color: #ed6d00;"}], ["Phoenix "], %{annotation: "%tc: 8/sandybrown"}}
+      ]
+
+    And different annotations can be used, but than `make_tag_clouds` becomes a _NOP_
+
+      iex(7)> markdown = [
+      ...(7)> "Elixir %%%: 12 20 800", "",
+      ...(7)> "Erlang %%%: 10/red 2em", "",
+      ...(7)> "Phoenix %%%: 8/sandybrown" ]
+      ...(7)> markdown
+      ...(7)> |> Earmark.as_ast!(annotations: "%%%:", inner_html: true)
+      ...(7)> |> make_tag_clouds
+      [
+        {"p", [], ["Elixir "], %{annotation: "%%%: 12 20 800"}},
+        {"p", [], ["Erlang "], %{annotation: "%%%: 10/red 2em"}},
+        {"p", [], ["Phoenix "], %{annotation: "%%%: 8/sandybrown"}}
+      ]
+
   """
 
 
@@ -94,7 +122,7 @@ defmodule TagCloud do
   @doc """
   A convenience method to access this library's version
 
-      iex(6)> {:ok, _} = Version.parse(version())
+      iex(8)> {:ok, _} = Version.parse(version())
   """
   @spec version :: binary()
   def version do

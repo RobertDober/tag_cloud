@@ -3,6 +3,12 @@ defmodule Test.TagCloud.Cli.ImplementationTest do
 
   import TagCloud.Cli.Implementation
 
+  describe "empty" do
+    test "empty" do
+      assert run([]) == {:stderr, "need a file argument"}
+    end
+  end
+
   describe "info options" do
     @usage """
     usage:
@@ -39,6 +45,11 @@ defmodule Test.TagCloud.Cli.ImplementationTest do
       result = run([file])
       expected = {:stdio, TagCloud.render_html(File.read!(file))}
       assert result == expected
+    end
+
+    test "no such file" do
+      file = "there-just-is-no-such-file.ce34x.z012"
+      assert run([file]) == {:stderr, "could not stream \"there-just-is-no-such-file.ce34x.z012\": no such file or directory"}
     end
   end
 end
