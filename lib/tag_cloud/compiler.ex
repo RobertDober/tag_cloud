@@ -5,13 +5,7 @@ defmodule TagCloud.Compiler do
 
   @moduledoc """
   Compiles tag cloud specifications of the form
-  `font_size font_weight color` to corresponding HTML attributes
-
-  `color`  either a legal CSS color or an integer between 0(transparent) and 12(opaque) that can be followed by a /css_color
-  `font_size` is an integer in `pt`
-  `font_weight` an integer between 0 and 800
-  matches to 13 gamma corrected shades of grey (yes only 13, a bigger number, let's pick
-  randomly a number, say 50 shades of grey could not be very well distinguished)
+  `color font_size font_weight color` to corresponding HTML attributes
   """
 
   @doc """
@@ -19,8 +13,16 @@ defmodule TagCloud.Compiler do
 
   ### Gray Scale
 
-      iex(0)> dsl_to_attributes("10 12 100")
+      iex(1)> dsl_to_attributes("10 12 100")
       [{"style", "color: #717171; font-size: 12pt; font-weight: 100;"}]
+
+  ### Scale on Predefined Colors
+  
+  All 140 color names defined by the CSS standard are supported.
+  The complete list can be found [here](https://en.wikipedia.org/wiki/Web_colors#Extended_colors)
+
+      iex(2)> dsl_to_attributes("8/fuchsia 3em 800")
+      [{"style", "color: #ff9bff; font-size: 3em; font-weight: 800;"}]
   """
   @spec dsl_to_attributes(binary()) :: attributes()
   def dsl_to_attributes(description) do
@@ -56,7 +58,7 @@ defmodule TagCloud.Compiler do
   defp _make_color(color) do
     case Color.parse_color(color) do
       {nil, color_} -> color_
-      color__ -> _make_gamma_corrected_color(color__)
+      {scale, color__} -> Color.gamma_corrected(scale, color__)
     end
   end
 
@@ -69,28 +71,4 @@ defmodule TagCloud.Compiler do
     end
   end
 
-  defp _make_gamma_corrected_color(color)
-
-  # Can become params later, if tweaking is needed
-  @gamma 1 / 2.2
-  @scales 12
-  @parse_color_rgx ~r{\A (..) (..) (..) \z}x
-  defp _make_gamma_corrected_color({scale, base_color}) do
-    Regex.run(@parse_color_rgx, base_color)
-    |> tl()
-    |> Enum.map(&_make_gamma_corrected_octet(scale, &1))
-    |> Enum.join
-    |> String.downcase
-  end
-
-  defp _make_gamma_corrected_octet(scale, octet) do
-    IO.puts octet
-    inv_c = 255 - String.to_integer(octet, 16)
-    with scaled <- 255 - inv_c * :math.pow((@scales - scale)/@scales, @gamma) do
-      scaled
-        |> round()
-        |> Integer.to_string(16)
-        |> String.pad_leading(2, "00")
-    end
-  end
 end

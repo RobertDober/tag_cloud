@@ -3,11 +3,16 @@
 All doctests in this README have been extracted from the code by [Extractly](https://github.com/RobertDober/extractly)
 and are therefore tested
 
-<%= xtra.moduledoc "TagCloud", headline: 2, wrap_code_blocks: "elixir" %>
+<%= xtra.moduledoc "TagCloud", include: :all, headline: 2, wrap_code_blocks: "elixir" %>
 
 <%= xtra.moduledoc "TagCloud.Cli", include: :all, headline: 3, wrap_code_blocks: "elixir" %>
 
 <%= xtra.functiondoc :all, module: "TagCloud", headline: 3, wrap_code_blocks: "elixir" %>
+
+<%= xtra.moduledoc "TagCloud.Compiler", inlcude: :all, headline: 3, wrap_code_blocks: "elixir" %>
+<%= xtra.functiondoc :all, module: "TagCloud.Compiler", headline: 4, wrap_code_blocks: "elixir" %>
+
+<%= xtra.moduledoc "TagCloud.EarmarkAst", inlcude: :all, headline: 2, wrap_code_blocks: "elixir" %>
 
 ## Author
 

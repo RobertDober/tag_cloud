@@ -27,9 +27,6 @@ defmodule TagCloud.Cli.Implementation do
      none so far
   """
 
-  @cli_options ~W[
-  ]
-
   @spec _parse_args(binaries()) :: parse_result()
   defp _parse_args(argv) do
     switches = [
@@ -43,7 +40,7 @@ defmodule TagCloud.Cli.Implementation do
       { [ {:help, true} ], _, _ } -> :help
       { [ {:version, true} ], _, _ } -> :version
       { _options, [ file ],  _ }  -> file
-      { options, [ ],           _ }  -> {:stderr, "need a file argument"}
+      { _options, [ ],           _ }  -> {:stderr, "need a file argument"}
     end
   end
 

@@ -71,9 +71,9 @@ defmodule Test.TagCloud.Compiler.DslToAttributesTest do
     end
   end
 
-  # <%= for color <- ~w[red green blue] do %>
+  # <%= for color <- ~w[red lime blue] do %>
   # <% color_map =[ "ff", "f5", "eb", "e0", "d4", "c8", "ba", "ab", "9b", "88", "71", "52", "00" ] %>
-  # <% color_pos = %{"red" => "ffxx", "green" => "xffx", "blue" => "ffffx"} %>
+  # <% color_pos = %{"red" => "ffxx", "lime" => "xffx", "blue" => "xxff"} %>
   # describe "color shades <%= color %>" do
   #   <%= for shade <- 0..12 do %>
   #   test "<%= shade %>" do
@@ -85,7 +85,6 @@ defmodule Test.TagCloud.Compiler.DslToAttributesTest do
   #   <% end %>
   # end
   # <% end %>
-
   describe "color shades red" do
 
     test "0" do
@@ -181,104 +180,100 @@ defmodule Test.TagCloud.Compiler.DslToAttributesTest do
 
   end
 
-
-
-  describe "color shades green" do
+  describe "color shades lime" do
 
     test "0" do
-      result = dsl_to_attributes("0/green")
+      result = dsl_to_attributes("0/lime")
 
       expected = {"style", "color: #ffffff;"}
       assert result == [expected]
     end
 
     test "1" do
-      result = dsl_to_attributes("1/green")
+      result = dsl_to_attributes("1/lime")
 
       expected = {"style", "color: #f5fff5;"}
       assert result == [expected]
     end
 
     test "2" do
-      result = dsl_to_attributes("2/green")
+      result = dsl_to_attributes("2/lime")
 
       expected = {"style", "color: #ebffeb;"}
       assert result == [expected]
     end
 
     test "3" do
-      result = dsl_to_attributes("3/green")
+      result = dsl_to_attributes("3/lime")
 
       expected = {"style", "color: #e0ffe0;"}
       assert result == [expected]
     end
 
     test "4" do
-      result = dsl_to_attributes("4/green")
+      result = dsl_to_attributes("4/lime")
 
       expected = {"style", "color: #d4ffd4;"}
       assert result == [expected]
     end
 
     test "5" do
-      result = dsl_to_attributes("5/green")
+      result = dsl_to_attributes("5/lime")
 
       expected = {"style", "color: #c8ffc8;"}
       assert result == [expected]
     end
 
     test "6" do
-      result = dsl_to_attributes("6/green")
+      result = dsl_to_attributes("6/lime")
 
       expected = {"style", "color: #baffba;"}
       assert result == [expected]
     end
 
     test "7" do
-      result = dsl_to_attributes("7/green")
+      result = dsl_to_attributes("7/lime")
 
       expected = {"style", "color: #abffab;"}
       assert result == [expected]
     end
 
     test "8" do
-      result = dsl_to_attributes("8/green")
+      result = dsl_to_attributes("8/lime")
 
       expected = {"style", "color: #9bff9b;"}
       assert result == [expected]
     end
 
     test "9" do
-      result = dsl_to_attributes("9/green")
+      result = dsl_to_attributes("9/lime")
 
       expected = {"style", "color: #88ff88;"}
       assert result == [expected]
     end
 
     test "10" do
-      result = dsl_to_attributes("10/green")
+      result = dsl_to_attributes("10/lime")
 
       expected = {"style", "color: #71ff71;"}
       assert result == [expected]
     end
 
     test "11" do
-      result = dsl_to_attributes("11/green")
+      result = dsl_to_attributes("11/lime")
 
       expected = {"style", "color: #52ff52;"}
       assert result == [expected]
     end
 
     test "12" do
-      result = dsl_to_attributes("12/green")
+      result = dsl_to_attributes("12/lime")
 
       expected = {"style", "color: #00ff00;"}
       assert result == [expected]
     end
 
   end
-
-
 
   describe "color shades blue" do
 
@@ -292,100 +287,87 @@ defmodule Test.TagCloud.Compiler.DslToAttributesTest do
     test "1" do
       result = dsl_to_attributes("1/blue")
 
-      expected = {"style", "color: #fffff5;"}
+      expected = {"style", "color: #f5f5ff;"}
       assert result == [expected]
     end
 
     test "2" do
       result = dsl_to_attributes("2/blue")
 
-      expected = {"style", "color: #ffffeb;"}
+      expected = {"style", "color: #ebebff;"}
       assert result == [expected]
     end
 
     test "3" do
       result = dsl_to_attributes("3/blue")
 
-      expected = {"style", "color: #ffffe0;"}
+      expected = {"style", "color: #e0e0ff;"}
       assert result == [expected]
     end
 
     test "4" do
       result = dsl_to_attributes("4/blue")
 
-      expected = {"style", "color: #ffffd4;"}
+      expected = {"style", "color: #d4d4ff;"}
       assert result == [expected]
     end
 
     test "5" do
       result = dsl_to_attributes("5/blue")
 
-      expected = {"style", "color: #ffffc8;"}
+      expected = {"style", "color: #c8c8ff;"}
       assert result == [expected]
     end
 
     test "6" do
       result = dsl_to_attributes("6/blue")
 
-      expected = {"style", "color: #ffffba;"}
+      expected = {"style", "color: #babaff;"}
       assert result == [expected]
     end
 
     test "7" do
       result = dsl_to_attributes("7/blue")
 
-      expected = {"style", "color: #ffffab;"}
+      expected = {"style", "color: #ababff;"}
       assert result == [expected]
     end
 
     test "8" do
       result = dsl_to_attributes("8/blue")
 
-      expected = {"style", "color: #ffff9b;"}
+      expected = {"style", "color: #9b9bff;"}
       assert result == [expected]
     end
 
     test "9" do
       result = dsl_to_attributes("9/blue")
 
-      expected = {"style", "color: #ffff88;"}
+      expected = {"style", "color: #8888ff;"}
       assert result == [expected]
     end
 
     test "10" do
       result = dsl_to_attributes("10/blue")
 
-      expected = {"style", "color: #ffff71;"}
+      expected = {"style", "color: #7171ff;"}
       assert result == [expected]
     end
 
     test "11" do
       result = dsl_to_attributes("11/blue")
 
-      expected = {"style", "color: #ffff52;"}
+      expected = {"style", "color: #5252ff;"}
       assert result == [expected]
     end
 
     test "12" do
       result = dsl_to_attributes("12/blue")
 
-      expected = {"style", "color: #ffff00;"}
+      expected = {"style", "color: #0000ff;"}
       assert result == [expected]
     end
 
   end
 
-
-
-
-
-
-
-
-
-
-
-
-
 end
-
