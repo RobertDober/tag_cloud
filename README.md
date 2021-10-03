@@ -99,13 +99,45 @@ and are therefore tested
     ]
 ```
 
+  Of course not annotated blocks are not effected
+
+```elixir
+    iex(6)> markdown = [
+    ...(6)> "Elixir %tc: 12 20 800", "",
+    ...(6)> "Erlang", "",
+    ...(6)> "Phoenix %tc: 8/sandybrown" ]
+    ...(6)> render_ast(markdown)
+    [
+      {"span", [{"style", "color: #000000; font-size: 20pt; font-weight: 800;"}], ["Elixir "], %{annotation: "%tc: 12 20 800"}},
+      {"p", [], ["Erlang"], %{}},
+      {"span", [{"style", "color: #ed6d00;"}], ["Phoenix "], %{annotation: "%tc: 8/sandybrown"}}
+    ]
+```
+
+  And different annotations can be used, but than `make_tag_clouds` becomes a _NOP_
+
+```elixir
+    iex(7)> markdown = [
+    ...(7)> "Elixir %%%: 12 20 800", "",
+    ...(7)> "Erlang %%%: 10/red 2em", "",
+    ...(7)> "Phoenix %%%: 8/sandybrown" ]
+    ...(7)> markdown
+    ...(7)> |> Earmark.as_ast!(annotations: "%%%:", inner_html: true)
+    ...(7)> |> make_tag_clouds
+    [
+      {"p", [], ["Elixir "], %{annotation: "%%%: 12 20 800"}},
+      {"p", [], ["Erlang "], %{annotation: "%%%: 10/red 2em"}},
+      {"p", [], ["Phoenix "], %{annotation: "%%%: 8/sandybrown"}}
+    ]
+```
+
 
 ## TagCloud.version/0
 
 A convenience method to access this library's version
 
 ```elixir
-    iex(6)> {:ok, _} = Version.parse(version())
+    iex(8)> {:ok, _} = Version.parse(version())
 ```
 
 
@@ -132,7 +164,7 @@ cond do
 A convenience method to access this library's version
 
 ```elixir
-    iex(6)> {:ok, _} = Version.parse(version())
+    iex(8)> {:ok, _} = Version.parse(version())
 ```
 
 
@@ -161,6 +193,14 @@ The complete list can be found [here](https://en.wikipedia.org/wiki/Web_colors#E
     iex(2)> dsl_to_attributes("8/fuchsia 3em 800")
     [{"style", "color: #ff9bff; font-size: 3em; font-weight: 800;"}]
 ```
+
+### Just use your own color
+
+```elixir
+    iex(3)> dsl_to_attributes("#cafe00")
+    [{"style", "color: #cafe00;"}]
+```
+
 
 
 ## TagCloud.EarmarkAst
