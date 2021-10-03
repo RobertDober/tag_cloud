@@ -10,7 +10,7 @@ defmodule TagCloud.EarmarkAst do
       iex(1)> markdown = [
       ...(1)> "Elixir %tc: 10/blue 18 800", "",
       ...(1)> "Ruby %tc: 4/red 10 100"]
-      ...(1)> render_markdown(markdown)
+      ...(1)> render_html(markdown)
       "<span style=\"color: #7171ff; font-size: 18pt; font-weight: 800;\">\nElixir </span>\n<span style=\"color: #ffd4d4; font-size: 10pt; font-weight: 100;\">\nRuby </span>\n"
 
   """
@@ -30,8 +30,8 @@ defmodule TagCloud.EarmarkAst do
     |> make_tag_clouds()
   end
 
-  @spec render_markdown(IO.chardata) :: binary()
-  def render_markdown(markdown) do
+  @spec render_html(IO.chardata) :: binary()
+  def render_html(markdown) do
     markdown
     |> render_ast()
     |> Earmark.transform

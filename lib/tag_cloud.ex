@@ -35,20 +35,20 @@ defmodule TagCloud do
       ...(2)> "Elixir %tc: 12 20 800", "",
       ...(2)> "Erlang %tc: 10/red 2em", "",
       ...(2)> "Phoenix %tc: 8/sandybrown" ]
-      ...(2)> render_markdown(markdown)
+      ...(2)> render_html(markdown)
       ...(2)> markdown
       ...(2)> |> Earmark.as_ast!(annotations: "%tc:", inner_html: true)
       ...(2)> |> make_tag_clouds
       ...(2)> |> Earmark.transform
       "<span style=\"color: #000000; font-size: 20pt; font-weight: 800;\">\nElixir </span>\n<span style=\"color: #ff7171; font-size: 2em;\">\nErlang </span>\n<span style=\"color: #ed6d00;\">\nPhoenix </span>\n"
 
-    We can render to html directly with `render_markdown`, which is a shortcut for the above
+    We can render to html directly with `render_html`, which is a shortcut for the above
 
       iex(3)> markdown = [
       ...(3)> "Elixir %tc: 12 20 800", "",
       ...(3)> "Erlang %tc: 10/red 2em", "",
       ...(3)> "Phoenix %tc: 8/sandybrown" ]
-      ...(3)> render_markdown(markdown)
+      ...(3)> render_html(markdown)
       "<span style=\"color: #000000; font-size: 20pt; font-weight: 800;\">\nElixir </span>\n<span style=\"color: #ff7171; font-size: 2em;\">\nErlang </span>\n<span style=\"color: #ed6d00;\">\nPhoenix </span>\n"
 
 
@@ -89,7 +89,7 @@ defmodule TagCloud do
 
   defdelegate render_ast(input), to: TagCloud.EarmarkAst
 
-  defdelegate render_markdown(input), to: TagCloud.EarmarkAst
+  defdelegate render_html(input), to: TagCloud.EarmarkAst
 
   @doc """
   A convenience method to access this library's version
