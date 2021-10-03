@@ -151,81 +151,81 @@ defmodule Test.TagCloud.Compiler.Color.ParseColorTest do
     end
   end
 
-  describe "green scales" do
+  describe "lime scales" do
     test "0" do
-      result = parse_color("0/green")
+      result = parse_color("0/lime")
       expected = {0, "00ff00"}
       assert result == expected
     end
 
     test "1" do
-      result = parse_color("1/green")
+      result = parse_color("1/lime")
       expected = {1, "00ff00"}
       assert result == expected
     end
 
     test "2" do
-      result = parse_color("2/green")
+      result = parse_color("2/lime")
       expected = {2, "00ff00"}
       assert result == expected
     end
 
     test "3" do
-      result = parse_color("3/green")
+      result = parse_color("3/lime")
       expected = {3, "00ff00"}
       assert result == expected
     end
 
     test "4" do
-      result = parse_color("4/green")
+      result = parse_color("4/lime")
       expected = {4, "00ff00"}
       assert result == expected
     end
 
     test "5" do
-      result = parse_color("5/green")
+      result = parse_color("5/lime")
       expected = {5, "00ff00"}
       assert result == expected
     end
 
     test "6" do
-      result = parse_color("6/green")
+      result = parse_color("6/lime")
       expected = {6, "00ff00"}
       assert result == expected
     end
 
     test "7" do
-      result = parse_color("7/green")
+      result = parse_color("7/lime")
       expected = {7, "00ff00"}
       assert result == expected
     end
 
     test "8" do
-      result = parse_color("8/green")
+      result = parse_color("8/lime")
       expected = {8, "00ff00"}
       assert result == expected
     end
 
     test "9" do
-      result = parse_color("9/green")
+      result = parse_color("9/lime")
       expected = {9, "00ff00"}
       assert result == expected
     end
 
     test "10" do
-      result = parse_color("10/green")
+      result = parse_color("10/lime")
       expected = {10, "00ff00"}
       assert result == expected
     end
 
     test "11" do
-      result = parse_color("11/green")
+      result = parse_color("11/lime")
       expected = {11, "00ff00"}
       assert result == expected
     end
 
     test "12" do
-      result = parse_color("12/green")
+      result = parse_color("12/lime")
       expected = {12, "00ff00"}
       assert result == expected
     end

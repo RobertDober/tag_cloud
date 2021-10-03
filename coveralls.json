@@ -1,0 +1,6 @@
+{
+  "skip_files": [
+    "tag_cloud/cli.ex",
+    "test/support"
+  ]
+}
