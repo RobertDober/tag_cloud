@@ -146,12 +146,6 @@ defmodule TagCloud.Compiler.Color do
     "yellowgreen" => "9acd32",
   }
 
-  @hex "[0-9a-fA-F]"
-  @hex_color_rgx ~r<\A \# (#{@hex}{6}) \z>x
-  @named_color_rgx ~r<\A (\d\d?) / (\w+) \z>x
-  @simple_scale_rgx ~r<\A \d\d? \z>x
-  @hex_scale_rgx ~r<\A (\d\d?) / \# (#{@hex}{6}) \z>x
-
   @color_rgx ~r<\A (..) (..) (..) \z>x
   @scales 12
   @gamma 2.2
@@ -215,10 +209,14 @@ defmodule TagCloud.Compiler.Color do
   defp _named_scale([_, scale, color_name]),
   do: {String.to_integer(scale), _get_predefined_color(color_name)}
 
+  @hex "[0-9a-fA-F]"
+  @named_color_rgx ~r<\A (\d\d?) / (\w+) \z>x
+  @simple_scale_rgx ~r<\A \d\d? \z>x
+  @hex_scale_rgx ~r<\A (\d\d?) / \# (#{@hex}{6}) \z>x
+
   @spec _parse_color!(binary()) :: scaled_color_t()
   defp _parse_color!(color) do
     cond do
-    match = Regex.run(@hex_color_rgx, color) -> {nil, match |> Enum.at(1)}
     match = Regex.run(@simple_scale_rgx, color) -> _simple_scale(match)
     match = Regex.run(@named_color_rgx, color) -> _named_scale(match)
     match = Regex.run(@hex_scale_rgx, color) -> {match |> Enum.at(1) |> String.to_integer,  match |> Enum.at(2)}

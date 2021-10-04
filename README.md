@@ -31,7 +31,7 @@ and are therefore tested
   <span <%= tc.html_style("12/peru 2em" %>>
   ```
 
-  and the CLI will execute an EEx template with the variable tc bound to TagCloud
+  and the CLI will execute an `EEx` template with the variable `tc` bound to `TagCloud`
 
 
   or for an AST like [`Floki's`](https://github.com/philss/floki) or [`EarmarkParser's`](https://github.com/RobertDober/earmark_parser)
@@ -43,6 +43,16 @@ and are therefore tested
 
 
 - Gamma correction for scaled colors
+
+  To create 13 different shades of a color, where 0 means _transparent_ (#ffffff) and
+  12 _opaque_ (original color value or #000000 as default) which are _equally_ spaced
+  for the human eye we use a gamma correction of 1/2.2 which seems to work very well
+  on modern screens. 
+
+  The result for all 13 shades for some colors can be seen [here](https://htmlpreview.github.io/?https://github.com/RobertDober/tag_cloud/blob/v0.1.0/examples/gamma_correction.html)
+
+  Right now the size of the scale and the gamma value cannot be modified but that could
+  be easily implemented if desired.
 
 ```elixir
       iex(3)> color_value("11")
@@ -79,13 +89,25 @@ and are therefore tested
       "8d3d89"
 ```
 
+  But color hex values can be used too
+
+```elixir
+      iex(10)> color_value("12/#d2d2d2")
+      "d2d2d2"
+```
+
+```elixir
+      iex(11)> color_value("10/#d2ee0f")
+      "bee65b"
+```
+
 
 ## TagCloud.version/0
 
 A convenience method to access this library's version
 
 ```elixir
-    iex(10)> {:ok, _} = Version.parse(version())
+    iex(12)> {:ok, _} = Version.parse(version())
 ```
 
 
@@ -112,7 +134,7 @@ cond do
 A convenience method to access this library's version
 
 ```elixir
-    iex(10)> {:ok, _} = Version.parse(version())
+    iex(12)> {:ok, _} = Version.parse(version())
 ```
 
 
