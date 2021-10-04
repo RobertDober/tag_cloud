@@ -16,119 +16,107 @@ and are therefore tested
 [![Hex.pm](https://img.shields.io/hexpm/dw/tag_cloud.svg)](https://hex.pm/packages/tag_cloud)
 [![Hex.pm](https://img.shields.io/hexpm/dt/tag_cloud.svg)](https://hex.pm/packages/tag_cloud)
 
-- Make Tag Clouds from a simple DSL
+- Make Tag Cloud Styles from a simple DSL
 
-    e.g.
-    ```
-    12 16 100 # translates to style="color: #000000; font-size: 16pt; font-weight: 100;"
-    #ffdd00 3em bb # style="color: #ffdd00; font-size: 3em; font-weight: 800;"
-
-    ```
-
-- Elixir Tools to create Tag clouds
-
-  - `TagCloud.Compiler.dsl_to_attributes`
+    e.g. for HTML
 
 ```elixir
-      iex(1)> TagCloud.Compiler.dsl_to_attributes("12 16 100")
+      iex(1)> html_style("12 16 100")
+      ~s{style="color: #000000; font-size: 16pt; font-weight: 100;"}
+```
+
+  This would then go perfectly into an EEx template
+
+  ```eex
+  <span <%= tc.html_style("12/peru 2em" %>>
+  ```
+
+  and the CLI will execute an `EEx` template with the variable `tc` bound to `TagCloud`
+
+
+  or for an AST like [`Floki's`](https://github.com/philss/floki) or [`EarmarkParser's`](https://github.com/RobertDober/earmark_parser)
+
+```elixir
+      iex(2)> ast_style("12 16 100")
       [{"style", "color: #000000; font-size: 16pt; font-weight: 100;"}]
 ```
 
-- Independent Library Functions
 
 - Gamma correction for scaled colors
 
-- Earmark Integration (needs v1.4.16-pre2 or greater)
+  To create 13 different shades of a color, where 0 means _transparent_ (#ffffff) and
+  12 _opaque_ (original color value or #000000 as default) which are _equally_ spaced
+  for the human eye we use a gamma correction of 1/2.2 which seems to work very well
+  on modern screens. 
 
-  The most general way to integrate with Earmark is with `make_tag_clouds`
+  The result for all 13 shades for some colors can be seen [here](https://htmlpreview.github.io/?https://github.com/RobertDober/tag_cloud/blob/v0.1.0/examples/gamma_correction.html)
+
+  Right now the size of the scale and the gamma value cannot be modified but that could
+  be easily implemented if desired.
+
+  For gray shades we can indicate the color as an integer
 
 ```elixir
-    iex(2)> markdown = [
-    ...(2)> "Elixir %tc: 12 20 800", "",
-    ...(2)> "Erlang %tc: 10/red 2em", "",
-    ...(2)> "Phoenix %tc: 8/sandybrown" ]
-    ...(2)> render_html(markdown)
-    ...(2)> markdown
-    ...(2)> |> Earmark.as_ast!(annotations: "%tc:", inner_html: true)
-    ...(2)> |> make_tag_clouds
-    ...(2)> |> Earmark.transform
-    "<span style=\"color: #000000; font-size: 20pt; font-weight: 800;\">\nElixir </span>\n<span style=\"color: #ff7171; font-size: 2em;\">\nErlang </span>\n<span style=\"color: #ed6d00;\">\nPhoenix </span>\n"
+      iex(3)> color_value(11)
+      "525252"
 ```
 
-  We can render to html directly with `render_html`, which is a shortcut for the above
+  or a string with a default color
 
 ```elixir
-    iex(3)> markdown = [
-    ...(3)> "Elixir %tc: 12 20 800", "",
-    ...(3)> "Erlang %tc: 10/red 2em", "",
-    ...(3)> "Phoenix %tc: 8/sandybrown" ]
-    ...(3)> render_html(markdown)
-    "<span style=\"color: #000000; font-size: 20pt; font-weight: 800;\">\nElixir </span>\n<span style=\"color: #ff7171; font-size: 2em;\">\nErlang </span>\n<span style=\"color: #ed6d00;\">\nPhoenix </span>\n"
+      iex(4)> color_value("11")
+      "525252"
 ```
 
-
-  Or just transform the AST
+  or explicitly name the color
 
 ```elixir
-    iex(4)> markdown = [
-    ...(4)> "Elixir %tc: 12 20 800", "",
-    ...(4)> "Erlang %tc: 10/red 2em", "",
-    ...(4)> "Phoenix %tc: 8/sandybrown" ]
-    ...(4)> render_ast(markdown)
-    [
-      {"span", [{"style", "color: #000000; font-size: 20pt; font-weight: 800;"}], ["Elixir "], %{annotation: "%tc: 12 20 800"}},
-      {"span", [{"style", "color: #ff7171; font-size: 2em;"}], ["Erlang "], %{annotation: "%tc: 10/red 2em"}},
-      {"span", [{"style", "color: #ed6d00;"}], ["Phoenix "], %{annotation: "%tc: 8/sandybrown"}}
-    ]
+      iex(5)> color_value("11/black")
+      "525252"
 ```
 
-  which is a shortcut for this
+  or use the hex representation
 
 ```elixir
-    iex(5)> markdown = [
-    ...(5)> "Elixir %tc: 12 20 800", "",
-    ...(5)> "Erlang %tc: 10/red 2em", "",
-    ...(5)> "Phoenix %tc: 8/sandybrown" ]
-    ...(5)> markdown
-    ...(5)> |> Earmark.as_ast!(annotations: "%tc:", inner_html: true)
-    ...(5)> |> make_tag_clouds
-    [
-      {"span", [{"style", "color: #000000; font-size: 20pt; font-weight: 800;"}], ["Elixir "], %{annotation: "%tc: 12 20 800"}},
-      {"span", [{"style", "color: #ff7171; font-size: 2em;"}], ["Erlang "], %{annotation: "%tc: 10/red 2em"}},
-      {"span", [{"style", "color: #ed6d00;"}], ["Phoenix "], %{annotation: "%tc: 8/sandybrown"}}
-    ]
+      iex(6)> color_value("11/#000000")
+      "525252"
 ```
 
-  Of course not annotated blocks are not effected
-
 ```elixir
-    iex(6)> markdown = [
-    ...(6)> "Elixir %tc: 12 20 800", "",
-    ...(6)> "Erlang", "",
-    ...(6)> "Phoenix %tc: 8/sandybrown" ]
-    ...(6)> render_ast(markdown)
-    [
-      {"span", [{"style", "color: #000000; font-size: 20pt; font-weight: 800;"}], ["Elixir "], %{annotation: "%tc: 12 20 800"}},
-      {"p", [], ["Erlang"], %{}},
-      {"span", [{"style", "color: #ed6d00;"}], ["Phoenix "], %{annotation: "%tc: 8/sandybrown"}}
-    ]
+      iex(7)> color_value("10/blue")
+      "7171ff"
 ```
 
-  And different annotations can be used, but than `make_tag_clouds` becomes a _NOP_
+```elixir
+      iex(8)> color_value("10/lime")
+      "71ff71"
+```
 
 ```elixir
-    iex(7)> markdown = [
-    ...(7)> "Elixir %%%: 12 20 800", "",
-    ...(7)> "Erlang %%%: 10/red 2em", "",
-    ...(7)> "Phoenix %%%: 8/sandybrown" ]
-    ...(7)> markdown
-    ...(7)> |> Earmark.as_ast!(annotations: "%%%:", inner_html: true)
-    ...(7)> |> make_tag_clouds
-    [
-      {"p", [], ["Elixir "], %{annotation: "%%%: 12 20 800"}},
-      {"p", [], ["Erlang "], %{annotation: "%%%: 10/red 2em"}},
-      {"p", [], ["Phoenix "], %{annotation: "%%%: 8/sandybrown"}}
-    ]
+      iex(9)> color_value("9/fuchsia")
+      "ff88ff"
+```
+
+```elixir
+      iex(10)> color_value("4/medium_slate_blue") # the  _ arge ignored
+      "0d16e0"
+```
+
+```elixir
+      iex(11)> color_value("8/DarkGoldenROD")  # the color name is downcased
+      "8d3d89"
+```
+
+  But color hex values can be used too
+
+```elixir
+      iex(12)> color_value("12/#d2d2d2")
+      "d2d2d2"
+```
+
+```elixir
+      iex(13)> color_value("10/#d2ee0f")
+      "bee65b"
 ```
 
 
@@ -137,7 +125,7 @@ and are therefore tested
 A convenience method to access this library's version
 
 ```elixir
-    iex(8)> {:ok, _} = Version.parse(version())
+    iex(14)> {:ok, _} = Version.parse(version())
 ```
 
 
@@ -164,7 +152,7 @@ cond do
 A convenience method to access this library's version
 
 ```elixir
-    iex(8)> {:ok, _} = Version.parse(version())
+    iex(14)> {:ok, _} = Version.parse(version())
 ```
 
 
@@ -173,14 +161,14 @@ A convenience method to access this library's version
 Compiles tag cloud specifications of the form
 `color font_size font_weight color` to corresponding HTML attributes
 
-#### TagCloud.Compiler.dsl_to_attributes/1
+#### TagCloud.Compiler.ast_style/1
 
 Implements the compilation
 
 ### Gray Scale
 
 ```elixir
-    iex(1)> dsl_to_attributes("10 12 100")
+    iex(1)> ast_style("10 12 100")
     [{"style", "color: #717171; font-size: 12pt; font-weight: 100;"}]
 ```
 
@@ -190,34 +178,17 @@ All 140 color names defined by the CSS standard are supported.
 The complete list can be found [here](https://en.wikipedia.org/wiki/Web_colors#Extended_colors)
 
 ```elixir
-    iex(2)> dsl_to_attributes("8/fuchsia 3em 800")
+    iex(2)> ast_style("8/fuchsia 3em 800")
     [{"style", "color: #ff9bff; font-size: 3em; font-weight: 800;"}]
 ```
 
 ### Just use your own color
 
 ```elixir
-    iex(3)> dsl_to_attributes("#cafe00")
+    iex(3)> ast_style("12/#cafe00")
     [{"style", "color: #cafe00;"}]
 ```
 
-
-
-## TagCloud.EarmarkAst
-
-An Earmark AST processor which will change annotated tag cloud paragraphs into spans with the necessary attributes
-
-Needs Earmark version 1.4.16-pre2 or later
-
-E.g.
-
-```elixir
-    iex(1)> markdown = [
-    ...(1)> "Elixir %tc: 10/blue 18 800", "",
-    ...(1)> "Ruby %tc: 4/red 10 100"]
-    ...(1)> render_html(markdown)
-    "<span style=\"color: #7171ff; font-size: 18pt; font-weight: 800;\">\nElixir </span>\n<span style=\"color: #ffd4d4; font-size: 10pt; font-weight: 100;\">\nRuby </span>\n"
-```
 
 
 

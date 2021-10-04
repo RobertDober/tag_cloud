@@ -20,7 +20,7 @@ defmodule TagCloud.Cli.Implementation do
      tag_cloud --version
      tag_cloud [ options... <file> ]
 
-  convert file from Markdown to HTML.using Earmark and allowing for TagCloud annotations
+  evaluate an EEx template file with the local variable `tc` set to `TagCloud` for your convenience
 
      where options can be any of:
 
@@ -54,28 +54,11 @@ defmodule TagCloud.Cli.Implementation do
 
   @spec _process_file(binary()) :: output_tuple()
   defp _process_file(file) do
-    cond do
-      String.ends_with?(file, ".eex") -> {:stdio, "EEx templates coming soon"}
-      true                            -> _process_markdown(file)
-    end
-  end
-
-  @spec _process_markdown(binary()) :: output_tuple()
-  defp _process_markdown(file) do
     try do
-      {:stdio, _transform_markdown(file)}
+      {:stdio, EEx.eval_file(file, tc: TagCloud)}
     rescue
       e in File.Error -> {:stderr, Exception.message(e)}
     end
   end
 
-  @spec _transform_markdown(binary()) :: binary()
-  defp _transform_markdown(file) do
-    file
-      |> File.stream!([:utf8], :line)
-      |> Enum.to_list
-      |> Earmark.as_ast!(annotations: @annotation)
-      |> TagCloud.make_tag_clouds
-      |> Earmark.transform
-  end
 end

@@ -1,11 +1,11 @@
 defmodule TagCloud.MixProject do
   use Mix.Project
 
-  @version "0.1.0-pre"
+  @version "0.1.0"
   @url "https://github.com/robertdober/tag_cloud"
 
   @description """
-  Eilxir Tools to create Tag clouds - Integration with Earmark Annotations - Independent Library Functions - Gamma correction for grey scales - CSS files
+  Eilxir Tools to create Tag clouds - Gamma correction for scaled colors - CSS files
   """
 
 
@@ -35,6 +35,7 @@ defmodule TagCloud.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      extra_applications: [:eex]
     ]
   end
 
@@ -44,7 +45,6 @@ defmodule TagCloud.MixProject do
       {:excoveralls, "~> 0.14.2", only: :test},
       {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false},
       {:extractly, "~> 0.5.3", only: [:dev], runtime: false},
-      {:earmark, "~> 1.4.16-pre2"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
     ]
