@@ -10,19 +10,7 @@ defmodule Test.TagCloud.Cli.ImplementationTest do
   end
 
   describe "info options" do
-    @usage """
-    usage:
-
-       tag_cloud --help
-       tag_cloud --version
-       tag_cloud [ options... <file> ]
-
-    convert file from Markdown to HTML.using Earmark and allowing for TagCloud annotations
-
-       where options can be any of:
-
-       none so far
-    """
+    @usage "usage:\n\n   tag_cloud --help\n   tag_cloud --version\n   tag_cloud [ options... <file> ]\n\nevaluate an EEx template file with the local variable `tc` set to `TagCloud` for your convenience\n\n   where options can be any of:\n\n   none so far\n"
     test "--help" do
       assert run(~W[--help]) == {:stdio, @usage}
     end
@@ -41,15 +29,15 @@ defmodule Test.TagCloud.Cli.ImplementationTest do
 
   describe "parse a file" do
     test "simple.md" do
-      file = "test/fixtures/simple.md"
+      file = "test/fixtures/simple.html.eex"
       result = run([file])
-      expected = {:stdio, TagCloud.render_html(File.read!(file))}
+      expected = {:stdio, "<span style=\"color: #000000; font-size: 20pt; font-weight: 800;\">Elixir</span>\n"}
       assert result == expected
     end
 
     test "no such file" do
       file = "there-just-is-no-such-file.ce34x.z012"
-      assert run([file]) == {:stderr, "could not stream \"there-just-is-no-such-file.ce34x.z012\": no such file or directory"}
+      assert run([file]) == {:stderr, "could not read file \"there-just-is-no-such-file.ce34x.z012\": no such file or directory"}
     end
   end
 end

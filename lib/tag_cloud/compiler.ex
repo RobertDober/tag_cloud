@@ -26,7 +26,7 @@ defmodule TagCloud.Compiler do
 
   ### Just use your own color
 
-      iex(3)> ast_style("#cafe00")
+      iex(3)> ast_style("12/#cafe00")
       [{"style", "color: #cafe00;"}]
 
   """
@@ -55,12 +55,12 @@ defmodule TagCloud.Compiler do
    ]
   end
 
-  @spec make_color(binary()) :: binary()
+  @spec make_color(binary()|integer()) :: binary()
+  def make_color(color) when is_integer(color), do: make_color(to_string(color))
   def make_color(color) do
-    case Color.parse_color(color) do
-      {nil, color_} -> color_
-      {scale, color__} -> Color.gamma_corrected(scale, color__)
-    end
+    color
+    |> Color.parse_color
+    |> Color.gamma_corrected
   end
 
   @spec _make_html(attribute()) :: binary()

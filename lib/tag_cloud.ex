@@ -41,33 +41,47 @@ defmodule TagCloud do
     Right now the size of the scale and the gamma value cannot be modified but that could
     be easily implemented if desired.
 
-        iex(3)> color_value("11")
+    For gray shades we can indicate the color as an integer
+
+        iex(3)> color_value(11)
         "525252"
 
-        iex(4)> color_value("11/black")
+    or a string with a default color
+
+        iex(4)> color_value("11")
         "525252"
 
-        iex(5)> color_value("10/blue")
+    or explicitly name the color
+
+        iex(5)> color_value("11/black")
+        "525252"
+
+    or use the hex representation
+
+        iex(6)> color_value("11/#000000")
+        "525252"
+
+        iex(7)> color_value("10/blue")
         "7171ff"
 
-        iex(6)> color_value("10/lime")
+        iex(8)> color_value("10/lime")
         "71ff71"
 
-        iex(7)> color_value("9/fuchsia")
+        iex(9)> color_value("9/fuchsia")
         "ff88ff"
 
-        iex(8)> color_value("4/medium_slate_blue") # the  _ arge ignored
+        iex(10)> color_value("4/medium_slate_blue") # the  _ arge ignored
         "0d16e0"
 
-        iex(9)> color_value("8/DarkGoldenROD")  # the color name is downcased
+        iex(11)> color_value("8/DarkGoldenROD")  # the color name is downcased
         "8d3d89"
 
     But color hex values can be used too
 
-        iex(10)> color_value("12/#d2d2d2")
+        iex(12)> color_value("12/#d2d2d2")
         "d2d2d2"
 
-        iex(11)> color_value("10/#d2ee0f")
+        iex(13)> color_value("10/#d2ee0f")
         "bee65b"
 
   """
@@ -79,7 +93,7 @@ defmodule TagCloud do
   @doc """
   A convenience method to access this library's version
 
-      iex(12)> {:ok, _} = Version.parse(version())
+      iex(14)> {:ok, _} = Version.parse(version())
   """
   @spec version :: binary()
   def version do

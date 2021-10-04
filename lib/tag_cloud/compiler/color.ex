@@ -1,7 +1,7 @@
 defmodule TagCloud.Compiler.Color do
   use TagCloud.Types
 
-  @type scaled_color_t :: {maybe(integer()), binary()}
+  @type scaled_color_t :: {integer(), binary()}
 
   @predefined_colors %{
     "aliceblue"  =>  "f0f8ff",
@@ -149,8 +149,8 @@ defmodule TagCloud.Compiler.Color do
   @color_rgx ~r<\A (..) (..) (..) \z>x
   @scales 12
   @gamma 2.2
-  @spec gamma_corrected(integer(), binary()) :: binary()
-  def gamma_corrected(scale, color) do
+  @spec gamma_corrected(scaled_color_t()) :: binary()
+  def gamma_corrected({scale, color}) do
     Regex.run(@color_rgx, color)
     |> tl()
     |> Enum.map(&gamma_corrected_octet(scale, &1))
@@ -205,7 +205,7 @@ defmodule TagCloud.Compiler.Color do
       |> String.downcase)
   end
 
-  @spec _named_scale(binaries()) :: {integer(), binary()}
+  @spec _named_scale(binaries()) :: scaled_color_t()
   defp _named_scale([_, scale, color_name]),
   do: {String.to_integer(scale), _get_predefined_color(color_name)}
 
@@ -224,6 +224,6 @@ defmodule TagCloud.Compiler.Color do
     end
   end
 
-  @spec _simple_scale(binaries()) :: {integer(), binary()}
+  @spec _simple_scale(binaries()) :: scaled_color_t()
   defp _simple_scale([scale]), do: {String.to_integer(scale), "000000"}
 end
