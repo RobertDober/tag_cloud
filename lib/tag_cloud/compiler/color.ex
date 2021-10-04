@@ -202,9 +202,18 @@ defmodule TagCloud.Compiler.Color do
     end
   end
 
+  @spec _get_predefined_color(binary()) :: binary()
+  defp _get_predefined_color(name) do
+    Map.fetch!(@predefined_colors,
+      name
+      |> String.replace("_", "")
+      |> String.replace("_", "")
+      |> String.downcase)
+  end
+
   @spec _named_scale(binaries()) :: {integer(), binary()}
   defp _named_scale([_, scale, color_name]),
-  do: {String.to_integer(scale), Map.fetch!(@predefined_colors, color_name)}
+  do: {String.to_integer(scale), _get_predefined_color(color_name)}
 
   @spec _parse_color!(binary()) :: scaled_color_t()
   defp _parse_color!(color) do
