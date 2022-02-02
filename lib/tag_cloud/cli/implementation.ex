@@ -4,8 +4,6 @@ defmodule TagCloud.Cli.Implementation do
   @type output_tuple :: {:stderr, binary()} | {:stdio, binary()}
   @typep parse_result :: :help | :version | output_tuple() | binary()
 
-  @annotation "%tc:"
-
   @spec run(list(binary)) :: output_tuple()
   def run(argv) do
     argv
