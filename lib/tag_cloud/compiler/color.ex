@@ -178,6 +178,7 @@ defmodule TagCloud.Compiler.Color do
   def gamma_corrected_octet(scale, octet) do
     inv_c = String.to_integer(octet, 16)
     with scaled <- (255 - inv_c) * :math.pow((@scales - scale)/@scales, 1/@gamma) do
+
       (inv_c - round(scaled))
       |> abs()
       |> round()
@@ -206,11 +207,12 @@ defmodule TagCloud.Compiler.Color do
   end
 
   @spec _named_scale(binaries()) :: scaled_color_t()
-  defp _named_scale([_, scale, color_name]),
-  do: {String.to_integer(scale), _get_predefined_color(color_name)}
+  defp _named_scale(match)
+  defp _named_scale([_, "", color_name]), do: {12, _get_predefined_color(color_name)}
+  defp _named_scale([_, scale, color_name]), do: {String.to_integer(scale), _get_predefined_color(color_name)}
 
   @hex "[0-9a-fA-F]"
-  @named_color_rgx ~r<\A (\d\d?) / (\w+) \z>x
+  @named_color_rgx ~r<\A (?: (\d\d?) / ) ? (\w+) \z>x
   @simple_scale_rgx ~r<\A \d\d? \z>x
   @hex_scale_rgx ~r<\A (\d\d?) / \# (#{@hex}{6}) \z>x
 
