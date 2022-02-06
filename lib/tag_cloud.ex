@@ -84,6 +84,11 @@ defmodule TagCloud do
         iex(13)> color_value("10/#d2ee0f")
         "bee65b"
 
+    If not shade is given 12 is assumed
+
+        iex(14)> color_value("fuchsia")
+        "ff00ff"
+
   """
 
   defdelegate ast_style(description), to: TagCloud.Compiler
@@ -93,7 +98,7 @@ defmodule TagCloud do
   @doc """
   A convenience method to access this library's version
 
-      iex(14)> {:ok, _} = Version.parse(version())
+      iex(15)> {:ok, _} = Version.parse(version())
   """
   @spec version :: binary()
   def version do
